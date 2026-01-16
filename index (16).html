@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Green App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background-color: #2ecc71; color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        .page-section { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 80px; height: 100%; }
+        .hidden { display: none !important; }
+        
+        /* HOME STYLES */
+        .home-content { padding-top: 90px; padding-left: 20px; padding-right: 20px; display: flex; flex-direction: column; align-items: center; }
+        .balance-card-container { position: absolute; top: 25px; left: 20px; z-index: 100; }
+        .balance-card { background-color: white; padding: 6px 8px 6px 15px; border-radius: 12px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
+        .balance-text { color: #000; font-size: 17px; font-weight: 700; }
+        .refresh-icon-btn { background-color: #d1e7fd; color: #2980b9; width: 32px; height: 32px; border-radius: 8px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .spin { animation: spin-animation 0.8s linear; } @keyframes spin-animation { 100% { transform: rotate(360deg); } }
+        
+        .notification-icon { position: absolute; top: 28px; right: 25px; font-size: 26px; color: white; cursor: pointer; z-index: 100; }
+        .notification-dot { position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background-color: #e74c3c; border-radius: 50%; border: 2px solid #2ecc71; }
+
+        .promo-card { background-color: white; width: 100%; max-width: 320px; padding: 10px 15px; margin-bottom: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .code-info { display: flex; flex-direction: column; }
+        .code-label { color: #7f8c8d; font-size: 11px; font-weight: 600; }
+        .promo-code-text { color: #2c3e50; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
+        .copy-btn { background-color: #f1f2f6; color: #576574; width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .copied { background-color: #2ecc71 !important; color: white !important; }
+        
+        .info-text { color: white; font-size: 13px; text-align: center; line-height: 1.6; margin-top: 10px; margin-bottom: 25px; background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; max-width: 320px; box-sizing: border-box; }
+        .admin-contact-btn { background-color: white; color: #2ecc71; text-decoration: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; font-size: 16px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s; margin-bottom: 20px; }
+        .admin-contact-btn:active { transform: scale(0.95); }
+        
+        /* REFERRAL STYLES */
+        .referral-content { align-items: center; padding: 20px; padding-top: 40px; }
+        .page-header { text-align: center; margin-bottom: 25px; }
+        .page-header h2 { margin: 0; font-size: 28px; font-weight: 700; }
+        .page-header p { margin: 5px 0 0; opacity: 0.9; font-size: 14px; }
+        .id-card { background-color: white; width: 100%; max-width: 280px; padding: 15px 20px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 20px; }
+        .id-label { color: #7f8c8d; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
+        .my-id-text { color: #2c3e50; font-size: 42px; font-weight: 800; margin: 0; }
+        .link-card { background-color: rgba(255,255,255,0.2); width: 100%; max-width: 320px; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.4); margin-bottom: 15px; }
+        .link-label { color: white; font-size: 14px; font-weight: 600; margin-bottom: 10px; display: block; }
+        .link-box { background-color: white; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; padding: 5px 5px 5px 15px; }
+        .link-text { color: #555; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 200px; }
+        .link-copy-btn { background-color: #3498db; color: white; width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .share-btn { background-color: #f39c12; color: white; width: 100%; max-width: 320px; padding: 12px; border-radius: 15px; border: none; font-size: 16px; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 15px; }
+        .ref-count-box { background-color: white; width: 140px; padding: 10px; border-radius: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .ref-count-label { display: block; color: #7f8c8d; font-size: 11px; font-weight: 600; margin-bottom: 2px; }
+        .ref-count-number { display: block; color: #2c3e50; font-size: 22px; font-weight: 800; }
+
+        /* WITHDRAWAL STYLES */
+        .withdrawal-content { align-items: center; padding: 20px; padding-top: 40px; }
+        .withdraw-card { background-color: white; width: 100%; max-width: 320px; padding: 25px 20px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 20px; }
+        .current-bal-label { color: #7f8c8d; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
+        .current-bal-amount { color: #27ae60; font-size: 38px; font-weight: 800; margin: 0; margin-bottom: 20px; }
+        .input-group { width: 100%; margin-bottom: 15px; text-align: left; }
+        .input-group label { color: #333; font-size: 12px; font-weight: bold; margin-left: 5px; margin-bottom: 5px; display: block; }
+        .w-input { width: 100%; padding: 15px; border: 2px solid #ecf0f1; border-radius: 12px; font-size: 16px; outline: none; box-sizing: border-box; background: #f9f9f9; transition: 0.3s; }
+        .w-input:focus { border-color: #2ecc71; background: white; }
+        .withdraw-btn { background-color: #2c3e50; color: white; width: 100%; padding: 15px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .withdraw-btn:active { transform: scale(0.98); }
+        .requirement-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; width: 100%; max-width: 320px; margin-bottom: 20px; text-align: center; }
+        .req-title { font-size: 12px; font-weight: bold; opacity: 0.8; margin-bottom: 5px; display: block; }
+        .req-status { font-size: 14px; font-weight: bold; }
+
+        /* --- MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 10000;
+            display: none; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-box {
+            background: white; width: 85%; max-width: 340px;
+            padding: 20px; border-radius: 20px;
+            text-align: center; color: #333;
+            animation: popUp 0.3s ease-out;
+            position: relative;
+        }
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .modal-img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        
+        .modal-btn { 
+            background: #2ecc71; color: white; border: none; 
+            padding: 12px 40px; border-radius: 50px; 
+            font-size: 16px; font-weight: bold; cursor: pointer; 
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.4);
+        }
+        .modal-close-icon {
+            position: absolute; top: 10px; right: 15px;
+            font-size: 24px; color: white; cursor: pointer; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 5;
+        }
+
+        /* NAV */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 75px; background-color: white; display: flex; justify-content: space-around; align-items: center; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); z-index: 2000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #95a5a6; cursor: pointer; }
+        .nav-item.active { color: #2ecc71; }
+    </style>
+</head>
+<body>
+
+    <!-- NOTIFICATION & INFO MODAL (VOICE & PROMO) -->
+    <div id="notification-modal" class="modal-overlay">
+        <div class="modal-box" style="padding: 15px; background:#1b1b2f; color:white;">
+            <i class="fas fa-times modal-close-icon" onclick="closeNotification()"></i>
+            
+            <img src="https://i.postimg.cc/Yqz6qQZX/IMG-20260108-WA0003.jpg" class="modal-img" alt="Promo">
+            
+            <div style="text-align: left; font-size: 13px; margin-bottom: 15px; background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; line-height: 1.5;">
+                හැමදාම පරදින එක නවත්තමු! 🛑 1xBet Crash Game එකේ රහස මෙන්න. අදම WINUP7 කෝඩ් එකෙන් රෙජිස්ටර් වෙලා වෙනස වටහාගන්න. දිනුම ෂුවර්! 😎💰
+                <br><br>
+                <b>Promo Code - WINUP7</b>
+            </div>
+
+            <button class="modal-btn" onclick="closeNotification()">OK</button>
+        </div>
+    </div>
+
+    <!-- WITHDRAWAL AD MODAL -->
+    <div id="withdrawal-ad-modal" class="modal-overlay">
+        <div class="modal-box" style="background: #0d1b2a; color: white; border: 1px solid #2ecc71;">
+            <i class="fas fa-times modal-close-icon" onclick="closeWithdrawalAd()"></i>
+            
+            <img src="https://i.postimg.cc/Yqz6qQZX/IMG-20260108-WA0003.jpg" class="modal-img" style="margin-top:10px;">
+            
+            <div style="text-align: center; font-size: 14px; margin-bottom: 20px;">
+                ඔබේ මුදල් ලබා ගැනීමට පෙර මෙම Promo Code භාවිතා කර ලියාපදිංචි වන්න.
+                <br><br>
+                <span style="color:#f39c12; font-weight:bold; font-size:18px;">WINUP7</span>
+            </div>
+
+            <button class="modal-btn" onclick="closeWithdrawalAd()">OK</button>
+        </div>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div id="home-section" class="page-section home-content">
+        <div class="balance-card-container">
+            <div class="balance-card">
+                <span class="balance-text" id="live-balance">0 Re</span>
+                <div class="refresh-icon-btn" onclick="rotateIcon(this)"><i class="fas fa-sync-alt"></i></div>
+            </div>
+        </div>
+        <div class="notification-icon" onclick="requestNotificationPermission()">
+            <i class="fas fa-bell"></i>
+            <div class="notification-dot"></div>
+        </div>
+        
+        <div class="promo-card">
+            <div class="code-info"><span class="code-label">Promo Code</span><span class="promo-code-text">WINUP7</span></div>
+            <div class="copy-btn" onclick="copyText('WINUP7', this)"><i class="far fa-copy"></i></div>
+        </div>
+        <div class="promo-card">
+            <div class="code-info"><span class="code-label">Promo Code</span><span class="promo-code-text">SLWIN7</span></div>
+            <div class="copy-btn" onclick="copyText('SLWIN7', this)"><i class="far fa-copy"></i></div>
+        </div>
+
+        <div class="info-text">
+            ඔබට කරන්න තිබෙන්නෙ මෙම Promo Code 2 එකක් යොදගෙන 1XBET තුලට ඔබෙ යලුවෝ දැනටමත් ප්ලෙ කරන් අයව මෙ Promo Code 2න් 1 යොදාගෙන නව ගිණුමක් සාදවන එක පමනයි. ඉන් පසු එම රෙජිස්ටර් උන එක්කෙනාගෙ User id නැතහොත් 1xBet Id එවිම පමණයි ඉන් පසු පැය 24 ක් ඇතුලත චෙක් වී ඔබෙ Blance එකට රුපියල් 1000 ක් එකතු වනු ඇත.
+        </div>
+
+        <a href="https://wa.me/94701417672?text=%2F%20how%20to%20detils" class="admin-contact-btn" target="_blank">
+            <i class="fab fa-whatsapp"></i> Admin Contact
+        </a>
+    </div>
+
+    <!-- REFERRAL PAGE -->
+    <div id="referral-section" class="page-section referral-content hidden">
+        <div class="page-header"><h2>Referral Program</h2><p>Invite your friends & earn!</p></div>
+        <div class="id-card"><span class="id-label">Your Unique ID</span><div class="my-id-text" id="user-id-display">...</div></div>
+        <div class="link-card"><span class="link-label">Your Referral Link</span><div class="link-box"><span class="link-text" id="ref-link-display">...</span><div class="link-copy-btn" onclick="copyRefLink(this)"><i class="far fa-copy"></i></div></div></div>
+        <button class="share-btn" onclick="shareRefLink()"><i class="fas fa-share-alt"></i> Share Now</button>
+        <div class="ref-count-box"><span class="ref-count-label">Total Joined</span><span class="ref-count-number" id="joined-count">0</span></div>
+    </div>
+
+    <!-- WITHDRAWAL PAGE -->
+    <div id="withdrawal-section" class="page-section withdrawal-content hidden">
+        <div class="page-header"><h2>Withdraw Money</h2><p>Transfer to your 1xBet Account</p></div>
+        
+        <div class="requirement-box">
+            <span class="req-title">REFERRAL REQUIREMENT</span>
+            <span class="req-status" id="ref-requirement-text">Target: 15 | You Have: 0</span>
+        </div>
+
+        <div class="withdraw-card">
+            <span class="current-bal-label">Available Balance</span>
+            <div class="current-bal-amount" id="withdraw-balance-display">0 Re</div>
+
+            <div class="input-group">
+                <label>1xBet Account ID</label>
+                <input type="number" id="xbet-id-input" class="w-input" placeholder="Enter ID here">
+            </div>
+
+            <button class="withdraw-btn" onclick="attemptWithdrawal()">WITHDRAW NOW</button>
+        </div>
+        
+        <div style="font-size:12px; opacity:0.8; text-align:center; max-width:300px;">
+            Minimum Withdrawal: 9500 Re<br>
+            Referral tasks apply for every withdrawal.
+        </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-home" onclick="switchTab('home')"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" id="nav-referral" onclick="switchTab('referral')"><i class="fas fa-users"></i><span>Referral</span></div>
+        <div class="nav-item" id="nav-withdrawal" onclick="switchTab('withdrawal')"><i class="fas fa-wallet"></i><span>Withdrawal</span></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, set, get, update, increment, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDA_sTGHrElJJJuaUXcl1TP2MjO8uGheeI",
+            authDomain: "meke-60f89.firebaseapp.com",
+            databaseURL: "https://meke-60f89-default-rtdb.firebaseio.com",
+            projectId: "meke-60f89",
+            storageBucket: "meke-60f89.firebasestorage.app",
+            messagingSenderId: "826415258845",
+            appId: "1:826415258845:web:72876db3c6dfe88bf68f34",
+            measurementId: "G-LE2HL2YY2H"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // --- AUDIO SETUP ---
+        const notiAudio = new Audio('https://media.vocaroo.com/mp3/1l3lMDI50A4c');
+        notiAudio.loop = true;
+
+        let currentBalance = 0;
+        let currentRefCount = 0;
+        let currentRefTarget = 15;
+
+        async function initApp() {
+            let userId = localStorage.getItem('my_unique_app_id');
+            if(!userId) {
+                userId = Math.floor(10000 + Math.random() * 90000).toString();
+                localStorage.setItem('my_unique_app_id', userId);
+            }
+
+            document.getElementById('user-id-display').innerText = userId;
+            const link = window.location.href.split('?')[0] + "?ref=" + userId;
+            document.getElementById('ref-link-display').innerText = link;
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const referrerId = urlParams.get('ref');
+            const userRef = ref(db, 'users/' + userId);
+
+            try {
+                const snapshot = await get(userRef);
+                if (!snapshot.exists()) {
+                    await set(userRef, { userId: userId, joinedAt: Date.now(), ip: "mobile_user" });
+                    await set(ref(db, 'balances/' + userId), 0);
+                    await set(ref(db, 'referrals/' + userId), { count: 0 });
+                    await set(ref(db, 'withdrawals/' + userId), { target: 15 });
+
+                    if (referrerId && referrerId !== userId) {
+                        // Increment Count
+                        await update(ref(db, 'referrals/' + referrerId), { count: increment(1) });
+                        
+                        // ADD 500 RUPEES TO REFERRER BALANCE
+                        const referrerBalRef = ref(db, 'balances/' + referrerId);
+                        runTransaction(referrerBalRef, (current) => {
+                            return (current || 0) + 500;
+                        });
+                    }
+                }
+                
+                const targetSnap = await get(ref(db, 'withdrawals/' + userId + '/target'));
+                if(targetSnap.exists()) {
+                    currentRefTarget = targetSnap.val();
+                } else {
+                    await set(ref(db, 'withdrawals/' + userId), { target: 15 });
+                    currentRefTarget = 15;
+                }
+                updateRequirementText();
+
+            } catch (error) { console.error(error); }
+
+            onValue(ref(db, 'balances/' + userId), (snap) => {
+                currentBalance = snap.exists() ? snap.val() : 0;
+                document.getElementById('live-balance').innerText = currentBalance + " Re";
+                document.getElementById('withdraw-balance-display').innerText = currentBalance + " Re";
+            });
+
+            onValue(ref(db, 'referrals/' + userId + '/count'), (snap) => {
+                currentRefCount = snap.exists() ? snap.val() : 0;
+                document.getElementById('joined-count').innerText = currentRefCount;
+                updateRequirementText();
+            });
+            
+            onValue(ref(db, 'withdrawals/' + userId + '/target'), (snap) => {
+                if(snap.exists()) {
+                    currentRefTarget = snap.val();
+                    updateRequirementText();
+                }
+            });
+
+            // Start Notification Loop if permission already granted
+            if ("Notification" in window && Notification.permission === "granted") {
+                scheduleNotifications();
+            }
+        }
+
+        function updateRequirementText() {
+            document.getElementById('ref-requirement-text').innerText = `Target: ${currentRefTarget} | You Have: ${currentRefCount}`;
+        }
+
+        // --- NOTIFICATION PERMISSION & LOGIC ---
+        window.requestNotificationPermission = function() {
+            if (!("Notification" in window)) {
+                openNotification(); // Fallback if not supported
+            } else if (Notification.permission === "granted") {
+                openNotification(); // Open immediately
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then((permission) => {
+                    if (permission === "granted") {
+                        openNotification(); // Open on allow
+                        scheduleNotifications(); // Start timer
+                    }
+                });
+            }
+        };
+
+        function scheduleNotifications() {
+            // Schedule every 12 hours (12 * 60 * 60 * 1000 ms)
+            setInterval(() => {
+                const notification = new Notification("Exclusive Offer! 💰", {
+                    body: "1xBet Crash Game රහස බලන්න...",
+                    icon: "https://i.postimg.cc/Yqz6qQZX/IMG-20260108-WA0003.jpg"
+                });
+
+                notification.onclick = function() {
+                    window.focus();
+                    openNotification();
+                };
+            }, 43200000); // 12 Hours
+        }
+
+        window.openNotification = function() {
+            document.getElementById('notification-modal').style.display = 'flex';
+            notiAudio.currentTime = 0;
+            notiAudio.play().catch(e => console.log("Audio auto-play blocked", e));
+        };
+
+        window.closeNotification = function() {
+            document.getElementById('notification-modal').style.display = 'none';
+            notiAudio.pause();
+            notiAudio.currentTime = 0;
+        };
+
+        // --- WITHDRAWAL AD LOGIC ---
+        window.closeWithdrawalAd = function() {
+            document.getElementById('withdrawal-ad-modal').style.display = 'none';
+        };
+
+        // --- WITHDRAWAL LOGIC ---
+        window.attemptWithdrawal = function() {
+            const xbetId = document.getElementById('xbet-id-input').value;
+            
+            if(!xbetId) { alert("Please enter your 1xBet ID."); return; }
+            if(currentBalance < 9500) { alert(`Insufficient Balance! Min: 9500 Re.\nCurrent: ${currentBalance} Re`); return; }
+            if(currentRefCount < currentRefTarget) { alert(`Withdrawal Locked! 🔒\nNeed ${currentRefTarget} referrals.\nYou have ${currentRefCount}.`); return; }
+
+            const userId = localStorage.getItem('my_unique_app_id');
+            const newTarget = currentRefTarget * 2;
+            
+            if(confirm(`Verification Passed! 🎉\n\nTo release this amount, system requires higher trust verification.\n\nNew Target: ${newTarget} Referrals required.`)) {
+                update(ref(db, 'withdrawals/' + userId), { target: newTarget });
+            }
+        };
+
+        window.switchTab = function(t) {
+            // HIDE ALL SECTIONS
+            document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            if(t==='home'){ 
+                document.getElementById('home-section').classList.remove('hidden'); 
+                document.getElementById('nav-home').classList.add('active'); 
+            }
+            if(t==='referral'){ 
+                document.getElementById('referral-section').classList.remove('hidden'); 
+                document.getElementById('nav-referral').classList.add('active'); 
+            }
+            if(t==='withdrawal'){ 
+                // SHOW AD FIRST
+                document.getElementById('withdrawal-ad-modal').style.display = 'flex';
+                // THEN SHOW CONTENT BEHIND IT
+                document.getElementById('withdrawal-section').classList.remove('hidden'); 
+                document.getElementById('nav-withdrawal').classList.add('active'); 
+            }
+        };
+        
+        window.copyText = (txt, btn) => { navigator.clipboard.writeText(txt); btn.classList.add('copied'); setTimeout(()=>btn.classList.remove('copied'), 1000); };
+        window.rotateIcon = (el) => { el.querySelector('i').classList.add('spin'); setTimeout(()=>el.querySelector('i').classList.remove('spin'), 800); };
+
+        window.copyRefLink = (btn) => { 
+            const link = document.getElementById('ref-link-display').innerText;
+            const msg = `1XBET එකෙන් නිකම් ඉඳලා සල්ලි හොයමු ඔබත් අදම ජොයින් වෙන්න\n${link}`;
+            navigator.clipboard.writeText(msg).then(() => {
+                btn.classList.add('copied'); setTimeout(()=>btn.classList.remove('copied'), 1000); 
+            });
+        };
+
+        window.shareRefLink = () => {
+             const link = document.getElementById('ref-link-display').innerText;
+             const msg = "1XBET එකෙන් නිකම් ඉඳලා සල්ලි හොයමු ඔබත් අදම ජොයින් වෙන්න";
+             if(navigator.share) {
+                 navigator.share({ title: 'Join & Earn', text: msg, url: link });
+             } else {
+                 navigator.clipboard.writeText(`${msg}\n${link}`);
+                 alert('Link copied!');
+             }
+        };
+
+        initApp();
+    </script>
+</body>
+</html>
