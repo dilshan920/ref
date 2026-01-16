@@ -46,7 +46,7 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            margin-top: 60px; /* Moved Down */
+            margin-top: 60px; 
             margin-bottom: 25px; 
         }
         .user-id-input { 
@@ -352,7 +352,7 @@
                 updateRequirementText();
             });
 
-            // CHECK STATUS LISTENER (Logic for Pending/Approved/Rejected)
+            // CHECK STATUS LISTENER
             onValue(ref(db, 'checks/' + userId), (snap) => {
                 const btn = document.getElementById('check-btn-main');
                 const input = document.getElementById('check-user-input');
@@ -366,18 +366,15 @@
                         input.disabled = true;
                         input.value = data.playerId;
                     } else if (data.status === 'approved') {
-                        // APPROVED
                         showAlert("Success! 🎉", "Player ID Approved! <b>1000 Re</b> added.", "success");
                         resetCheckUI();
-                        remove(ref(db, 'checks/' + userId)); // Clear check node
+                        remove(ref(db, 'checks/' + userId)); 
                     } else if (data.status === 'rejected') {
-                        // REJECTED
                         showAlert("Rejected ❌", "Your Player ID was rejected.", "error");
                         resetCheckUI();
-                        remove(ref(db, 'checks/' + userId)); // Clear check node
+                        remove(ref(db, 'checks/' + userId));
                     }
                 } else {
-                    // Normal State
                     resetCheckUI();
                 }
             });
@@ -393,12 +390,19 @@
             input.disabled = false;
         }
 
-        // --- NEW CHECKING LOGIC ---
-        window.startChecking = function() {
+        // --- NEW CHECKING LOGIC WITH DUPLICATE CHECK ---
+        window.startChecking = async function() {
             const inputVal = document.getElementById('check-user-input').value;
             
             if (!inputVal) return showAlert("Error", "Please enter a User ID.", "error");
             if (inputVal.length < 10) return showAlert("Invalid ID", "User ID must be at least 10 digits.", "error");
+
+            // CHECK IF ID IS ALREADY USED
+            const usedSnap = await get(ref(db, 'used_player_ids/' + inputVal));
+            if(usedSnap.exists()) {
+                showAlert("Error", "Already Used ID", "error");
+                return;
+            }
 
             // Send to DB as Pending
             set(ref(db, 'checks/' + myUserId), {
@@ -470,11 +474,20 @@
 
         window.copyText = (txt, btn) => { navigator.clipboard.writeText(txt); btn.classList.add('copied'); setTimeout(()=>btn.classList.remove('copied'), 1000); };
         window.rotateIcon = (el) => { el.querySelector('i').classList.add('spin'); setTimeout(()=>el.querySelector('i').classList.remove('spin'), 800); };
-        window.copyRefLink = (btn) => { navigator.clipboard.writeText(document.getElementById('ref-link-display').innerText); btn.classList.add('copied'); setTimeout(()=>btn.classList.remove('copied'), 1000); };
+        
+        // --- UPDATED COPY & SHARE LOGIC ---
+        window.copyRefLink = (btn) => { 
+            const link = document.getElementById('ref-link-display').innerText;
+            const msg = `1XBET එකෙන් නිකම් ඉඳලා සල්ලි හොයමු ඔබත් අදම ජොයින් වෙන්න\n${link}`;
+            navigator.clipboard.writeText(msg).then(() => {
+                btn.classList.add('copied'); setTimeout(()=>btn.classList.remove('copied'), 1000); 
+            });
+        };
         window.shareRefLink = () => {
              const link = document.getElementById('ref-link-display').innerText;
-             if(navigator.share) navigator.share({ title: 'Join & Earn', text: "Join Now", url: link });
-             else { navigator.clipboard.writeText(link); showAlert("Copied", "Link copied!", "success"); }
+             const msg = `1XBET එකෙන් නිකම් ඉඳලා සල්ලි හොයමු ඔබත් අදම ජොයින් වෙන්න\n${link}`;
+             if(navigator.share) navigator.share({ title: 'Join & Earn', text: msg, url: link });
+             else { navigator.clipboard.writeText(msg); showAlert("Copied", "Link copied!", "success"); }
         };
 
         initApp();
