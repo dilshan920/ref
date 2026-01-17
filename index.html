@@ -19,11 +19,11 @@
             touch-action: manipulation;
         }
 
-        .page-section { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 80px; height: 100%; }
+        .page-section { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-bottom: 90px; height: 100%; }
         .hidden { display: none !important; }
         
-        /* HOME STYLES */
-        .home-content { padding-top: 90px; padding-left: 20px; padding-right: 20px; display: flex; flex-direction: column; align-items: center; }
+        /* HEADER ELEMENTS */
+        .home-content { padding-top: 90px; padding-left: 15px; padding-right: 15px; display: flex; flex-direction: column; align-items: center; }
         .balance-card-container { position: absolute; top: 25px; left: 20px; z-index: 100; }
         .balance-card { background-color: white; padding: 6px 8px 6px 15px; border-radius: 12px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
         .balance-text { color: #000; font-size: 17px; font-weight: 700; }
@@ -33,61 +33,119 @@
         .notification-icon { position: absolute; top: 28px; right: 25px; font-size: 26px; color: white; cursor: pointer; z-index: 100; }
         .notification-dot { position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background-color: #e74c3c; border-radius: 50%; border: 2px solid #2ecc71; }
 
-        .promo-card { background-color: white; width: 100%; max-width: 320px; padding: 10px 15px; margin-bottom: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .code-info { display: flex; flex-direction: column; }
-        .code-label { color: #7f8c8d; font-size: 11px; font-weight: 600; }
-        .promo-code-text { color: #2c3e50; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
-        .copy-btn { background-color: #f1f2f6; color: #576574; width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
-        .copied { background-color: #2ecc71 !important; color: white !important; }
+        /* --- NEW HOME STYLES --- */
+        .main-hero-img {
+            width: 100%;
+            max-width: 340px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
 
-        /* --- CENTER CHECKING SECTION --- */
-        .center-section { 
-            width: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            margin-top: 60px; 
-            margin-bottom: 25px; 
+        /* WHATSAPP STYLE AUDIO PLAYER */
+        .voice-note-card {
+            background-color: #075E54; /* WhatsApp Dark Green */
+            width: 100%;
+            max-width: 320px;
+            border-radius: 20px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
-        .user-id-input { 
-            width: 100%; 
-            max-width: 320px; 
-            background-color: white; 
-            border: none; 
-            border-radius: 15px; 
-            padding: 15px; 
-            font-size: 16px; 
-            color: #333; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            outline: none; 
-            text-align: center; 
-            margin-bottom: 10px; 
-            box-sizing: border-box;
+        .play-circle {
+            width: 45px;
+            height: 45px;
+            background-color: #f39c12; /* Orange color */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            flex-shrink: 0;
         }
-        .user-id-input:disabled { background-color: #eee; color: #999; }
-
-        .check-btn { 
-            width: 100%; 
-            max-width: 320px; 
-            background-color: #3498db; 
-            color: white; 
-            border: none; 
-            border-radius: 15px; 
-            padding: 15px; 
-            font-size: 16px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            transition: 0.3s; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 10px; 
+        .play-circle i {
+            color: white;
+            font-size: 18px;
+            margin-left: 3px; 
         }
-        .check-btn:active { transform: scale(0.98); }
-        .check-btn.loading { background-color: #7f8c8d; pointer-events: none; }
+        .waveform-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .wave-bars {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 25px;
+            opacity: 0.6;
+        }
+        .bar { width: 3px; background-color: #b2bec3; border-radius: 2px; animation: wave 1s infinite ease-in-out; animation-play-state: paused; }
+        .bar:nth-child(odd) { height: 15px; }
+        .bar:nth-child(even) { height: 25px; }
+        .playing .bar { animation-play-state: running; background-color: #fff; }
+        @keyframes wave { 0%, 100% { height: 10px; } 50% { height: 25px; } }
         
-        /* REFERRAL STYLES */
+        .duration-text {
+            color: #bdc3c7;
+            font-size: 11px;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* TEXT BOX */
+        .info-text-box {
+            background-color: rgba(0,0,0,0.15);
+            padding: 15px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* BOTTOM PROMO COPY */
+        .bottom-promo-bar {
+            background-color: white;
+            width: 100%;
+            max-width: 320px;
+            padding: 10px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .bottom-promo-text {
+            color: #2c3e50;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+        .bottom-copy-btn {
+            background-color: #27ae60;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* REFERRAL & WITHDRAWAL STYLES */
         .referral-content { align-items: center; padding: 20px; padding-top: 40px; }
         .page-header { text-align: center; margin-bottom: 25px; }
         .page-header h2 { margin: 0; font-size: 28px; font-weight: 700; }
@@ -105,7 +163,6 @@
         .ref-count-label { display: block; color: #7f8c8d; font-size: 11px; font-weight: 600; margin-bottom: 2px; }
         .ref-count-number { display: block; color: #2c3e50; font-size: 22px; font-weight: 800; }
 
-        /* WITHDRAWAL STYLES */
         .withdrawal-content { align-items: center; padding: 20px; padding-top: 40px; }
         .withdraw-card { background-color: white; width: 100%; max-width: 320px; padding: 25px 20px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 20px; }
         .current-bal-label { color: #7f8c8d; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
@@ -120,54 +177,64 @@
         .req-title { font-size: 12px; font-weight: bold; opacity: 0.8; margin-bottom: 5px; display: block; }
         .req-status { font-size: 14px; font-weight: bold; }
 
-        /* --- ALL CUSTOM MODALS (POPUP) --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 10000;
-            display: none; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
-        }
-        .modal-box {
-            background: white; width: 85%; max-width: 320px;
-            padding: 25px; border-radius: 20px;
-            text-align: center; color: #333;
-            animation: popUp 0.3s ease-out;
-            position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
+        /* MODALS */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-box { background: white; width: 85%; max-width: 320px; padding: 25px; border-radius: 20px; text-align: center; color: #333; animation: popUp 0.3s ease-out; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        
         .modal-img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
-        
         .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; color: #333; }
         .modal-msg { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 20px; }
-        
-        .modal-btn { 
-            background: #2ecc71; color: white; border: none; 
-            padding: 12px 0; width: 100%; border-radius: 10px; 
-            font-size: 16px; font-weight: bold; cursor: pointer; 
-            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.4);
-            transition: 0.2s;
-        }
+        .modal-btn { background: #2ecc71; color: white; border: none; padding: 12px 0; width: 100%; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(46, 204, 113, 0.4); transition: 0.2s; }
         .modal-btn:active { transform: scale(0.95); }
         .modal-btn.danger { background: #e74c3c; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4); }
         .modal-btn.primary { background: #3498db; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4); }
-
-        .modal-close-icon {
-            position: absolute; top: 10px; right: 15px;
-            font-size: 24px; color: #999; cursor: pointer; 
-            z-index: 5;
-        }
-        
+        .modal-close-icon { position: absolute; top: 10px; right: 15px; font-size: 24px; color: #999; cursor: pointer; z-index: 5; }
         .lock-icon { font-size: 40px; color: #f39c12; margin-bottom: 15px; display: block; }
 
         /* NAV */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 75px; background-color: white; display: flex; justify-content: space-around; align-items: center; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); z-index: 2000; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: #95a5a6; cursor: pointer; }
         .nav-item.active { color: #2ecc71; }
+        
+        .copied { background-color: #2ecc71 !important; }
+
+        /* --- TOOLTIP BUBBLE STYLE (CENTERED & SMALLER) --- */
+        .nav-tooltip {
+            position: fixed;
+            bottom: 80px;
+            left: 50%; /* Back to Center */
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 8px 12px; /* Reduced Padding */
+            border-radius: 20px;
+            font-size: 11px; /* Smaller Font */
+            z-index: 3000;
+            text-align: center;
+            width: 160px; /* Reduced Width */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s ease-out;
+        }
+        /* Triangle Arrow */
+        .nav-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
     </style>
 </head>
 <body>
+
+    <!-- TOOLTIP BUBBLE (Visible for 7s) -->
+    <div id="referral-bubble" class="nav-tooltip">
+        ඔබත් ඔබගෙ Referral ලින්ක් එක Shere කරලා නොමිලේ මුදල් උපයන්න
+    </div>
 
     <!-- MODALS -->
     <div id="custom-alert-modal" class="modal-overlay">
@@ -227,20 +294,55 @@
             <div class="notification-dot"></div>
         </div>
         
-        <div class="promo-card">
-            <div class="code-info"><span class="code-label">Promo Code</span><span class="promo-code-text">WINUP7</span></div>
-            <div class="copy-btn" onclick="copyText('WINUP7', this)"><i class="far fa-copy"></i></div>
-        </div>
-        <div class="promo-card">
-            <div class="code-info"><span class="code-label">Promo Code</span><span class="promo-code-text">SLWIN7</span></div>
-            <div class="copy-btn" onclick="copyText('SLWIN7', this)"><i class="far fa-copy"></i></div>
+        <!-- 1. MAIN IMAGE -->
+        <img src="https://i.postimg.cc/LXLXyGW5/IMG-20260107-WA0030(1).jpg" class="main-hero-img">
+
+        <!-- 2. VOICE NOTES (UPDATED LINKS) -->
+        <div class="voice-note-card" id="voice1">
+            <div class="play-circle" onclick="toggleAudio('audio1', 'voice1')">
+                <i class="fas fa-play" id="icon-audio1"></i>
+            </div>
+            <div class="waveform-container">
+                <div class="wave-bars" id="wave-audio1">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+                <div class="duration-text">Voice 01</div>
+            </div>
+            <audio id="audio1" src="https://media.vocaroo.com/mp3/1kCEJ8GSz9of"></audio>
         </div>
 
-        <!-- CHECKING SECTION -->
-        <div class="center-section">
-            <input type="number" id="check-user-input" class="user-id-input" placeholder="Enter User ID">
-            <button id="check-btn-main" class="check-btn" onclick="startChecking()">Checking</button>
+        <div class="voice-note-card" id="voice2">
+            <div class="play-circle" onclick="toggleAudio('audio2', 'voice2')">
+                <i class="fas fa-play" id="icon-audio2"></i>
+            </div>
+            <div class="waveform-container">
+                <div class="wave-bars" id="wave-audio2">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+                <div class="duration-text">Voice 02</div>
+            </div>
+            <audio id="audio2" src="https://media.vocaroo.com/mp3/18SZJVQD18ip"></audio>
         </div>
+
+        <!-- 3. DESCRIPTION TEXT -->
+        <div class="info-text-box">
+            හැමදාම පරදින එක නවත්තමු! 🛑 1xBet Crash Game එකේ රහස මෙන්න. අදම WINUP7 කෝඩ් එකෙන් රෙජිස්ටර් වෙලා වෙනස වටහාගන්න. දිනුම ෂුවර්! 😎💰
+            <br><br>
+            Promo Code - WINUP7
+        </div>
+
+        <!-- 4. BOTTOM PROMO COPY -->
+        <div class="bottom-promo-bar">
+            <span class="bottom-promo-text">WINUP7</span>
+            <div class="bottom-copy-btn" onclick="copyText('WINUP7', this)">
+                <i class="far fa-copy"></i>
+            </div>
+        </div>
+
     </div>
 
     <!-- REFERRAL PAGE -->
@@ -250,6 +352,11 @@
         <div class="link-card"><span class="link-label">Your Referral Link</span><div class="link-box"><span class="link-text" id="ref-link-display">...</span><div class="link-copy-btn" onclick="copyRefLink(this)"><i class="far fa-copy"></i></div></div></div>
         <button class="share-btn" onclick="shareRefLink()"><i class="fas fa-share-alt"></i> Share Now</button>
         <div class="ref-count-box"><span class="ref-count-label">Total Joined</span><span class="ref-count-number" id="joined-count">0</span></div>
+        
+        <!-- NEW FOOTER TEXT -->
+        <div style="margin-top: 25px; font-size: 13px; color: #555; text-align: center; max-width: 280px; font-weight: 600; line-height: 1.4;">
+            ඔබේ Referral ලින්ක් එකෙන් ජොයින් වෙන එක පුද්ගලයෙකුට 500LKR බැගින් ගෙවනු ලැබේ.
+        </div>
     </div>
 
     <!-- WITHDRAWAL PAGE -->
@@ -302,6 +409,12 @@
         let currentRefTarget = 15;
         let myUserId = "";
 
+        // --- BUBBLE TIMER (UPDATED 7 SECONDS) ---
+        setTimeout(() => {
+            const bubble = document.getElementById('referral-bubble');
+            if(bubble) bubble.style.display = 'none';
+        }, 7000); // 7 Seconds
+
         async function initApp() {
             let userId = localStorage.getItem('my_unique_app_id');
             if(!userId) {
@@ -352,65 +465,8 @@
                 updateRequirementText();
             });
 
-            // CHECK STATUS LISTENER
-            onValue(ref(db, 'checks/' + userId), (snap) => {
-                const btn = document.getElementById('check-btn-main');
-                const input = document.getElementById('check-user-input');
-
-                if (snap.exists()) {
-                    const data = snap.val();
-                    if (data.status === 'pending') {
-                        // LOCK UI
-                        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Checking...';
-                        btn.classList.add('loading');
-                        input.disabled = true;
-                        input.value = data.playerId;
-                    } else if (data.status === 'approved') {
-                        showAlert("Success! 🎉", "Player ID Approved! <b>1000 Re</b> added.", "success");
-                        resetCheckUI();
-                        remove(ref(db, 'checks/' + userId)); 
-                    } else if (data.status === 'rejected') {
-                        showAlert("Rejected ❌", "Your Player ID was rejected.", "error");
-                        resetCheckUI();
-                        remove(ref(db, 'checks/' + userId));
-                    }
-                } else {
-                    resetCheckUI();
-                }
-            });
-
             if ("Notification" in window && Notification.permission === "granted") scheduleNotifications();
         }
-
-        function resetCheckUI() {
-            const btn = document.getElementById('check-btn-main');
-            const input = document.getElementById('check-user-input');
-            btn.innerHTML = 'Checking';
-            btn.classList.remove('loading');
-            input.disabled = false;
-        }
-
-        // --- NEW CHECKING LOGIC WITH DUPLICATE CHECK ---
-        window.startChecking = async function() {
-            const inputVal = document.getElementById('check-user-input').value;
-            
-            if (!inputVal) return showAlert("Error", "Please enter a User ID.", "error");
-            if (inputVal.length < 10) return showAlert("Invalid ID", "User ID must be at least 10 digits.", "error");
-
-            // CHECK IF ID IS ALREADY USED
-            const usedSnap = await get(ref(db, 'used_player_ids/' + inputVal));
-            if(usedSnap.exists()) {
-                showAlert("Error", "Already Used ID", "error");
-                return;
-            }
-
-            // Send to DB as Pending
-            set(ref(db, 'checks/' + myUserId), {
-                status: 'pending',
-                playerId: inputVal,
-                timestamp: Date.now()
-            });
-        };
 
         function updateRequirementText() {
             document.getElementById('ref-requirement-text').innerText = `Target: ${currentRefTarget} | You Have: ${currentRefCount}`;
@@ -421,6 +477,40 @@
                 notification.onclick = function() { window.focus(); openNotification(); };
             }, 43200000);
         }
+
+        // --- AUDIO PLAYER LOGIC ---
+        window.toggleAudio = function(audioId, cardId) {
+            const audio = document.getElementById(audioId);
+            const icon = document.getElementById('icon-' + audioId);
+            const waves = document.getElementById('wave-' + audioId);
+            
+            // Stop other audios
+            document.querySelectorAll('audio').forEach(el => {
+                if(el.id !== audioId) {
+                    el.pause();
+                    el.currentTime = 0;
+                }
+            });
+            document.querySelectorAll('.play-circle i').forEach(el => {
+                if(el.id !== 'icon-' + audioId) el.className = 'fas fa-play';
+            });
+            document.querySelectorAll('.wave-bars').forEach(el => el.classList.remove('playing'));
+
+            if (audio.paused) {
+                audio.play();
+                icon.className = 'fas fa-pause';
+                waves.classList.add('playing');
+            } else {
+                audio.pause();
+                icon.className = 'fas fa-play';
+                waves.classList.remove('playing');
+            }
+
+            audio.onended = function() {
+                icon.className = 'fas fa-play';
+                waves.classList.remove('playing');
+            };
+        };
 
         // --- MODAL FUNCTIONS ---
         window.showAlert = function(title, msg, type = 'normal') {
@@ -472,10 +562,9 @@
             if(t==='withdrawal') document.getElementById('withdrawal-ad-modal').style.display='flex';
         };
 
-        window.copyText = (txt, btn) => { navigator.clipboard.writeText(txt); btn.classList.add('copied'); setTimeout(()=>btn.classList.remove('copied'), 1000); };
+        window.copyText = (txt, btn) => { navigator.clipboard.writeText(txt); btn.parentElement.classList.add('copied'); setTimeout(()=>btn.parentElement.classList.remove('copied'), 1000); };
         window.rotateIcon = (el) => { el.querySelector('i').classList.add('spin'); setTimeout(()=>el.querySelector('i').classList.remove('spin'), 800); };
         
-        // --- UPDATED COPY & SHARE LOGIC ---
         window.copyRefLink = (btn) => { 
             const link = document.getElementById('ref-link-display').innerText;
             const msg = `1XBET එකෙන් නිකම් ඉඳලා සල්ලි හොයමු ඔබත් අදම ජොයින් වෙන්න\n${link}`;
